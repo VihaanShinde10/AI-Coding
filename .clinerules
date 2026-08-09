@@ -1,0 +1,13 @@
+# Coding Standards
+- Follow the repository's existing coding conventions and style.
+- Keep changes minimal and scoped; do not modify unrelated files.
+
+# Financial Services Rules
+- Monetary values must use BigDecimal (or Decimal).
+- Never use float or double for monetary values.
+- Round monetary values to 2 decimal places with RoundingMode.HALF_UP.
+
+# Definition of Done
+- Every public function must have a docstring.
+- Every public function must have at least one test.
+- Run the test suite (mvn test) and confirm all tests pass before completing.
