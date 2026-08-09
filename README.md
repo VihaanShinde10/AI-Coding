@@ -98,6 +98,33 @@ with `RoundingMode.HALF_UP`, and is passed to `FeeCalculator` for the fee.
 Validation rejects null requests, blank accounts/symbol, non-positive quantity
 or price, and unsupported currencies.
 
+## Low-Balance Alert Feature
+
+The module also provides a low-balance alert capability that evaluates account
+balances against a configured threshold and produces alerts sorted by urgency.
+
+### Classes
+
+| Class | Responsibility |
+| --- | --- |
+| `AccountBalance` | Immutable record holding an account ID and its current balance. |
+| `LowBalanceAlert` | Immutable record holding the account, balance, threshold, shortfall, and reason code. |
+| `LowBalanceAlertService` | `@Service` that evaluates balances against a threshold, sorts alerts by urgency, and formats a text summary. |
+
+Alerts are produced only for accounts whose balance is **below** the threshold
+(a balance exactly equal to the threshold produces no alert). Reason codes:
+
+| Code | Meaning |
+| --- | --- |
+| `NEGATIVE_BALANCE` | Balance is negative (overdrawn) — most urgent. |
+| `ZERO_BALANCE` | Balance is exactly zero. |
+| `BELOW_THRESHOLD` | Balance is positive but below the threshold. |
+
+Alerts are sorted by urgency (negative first, then zero, then below-threshold)
+and, within the same reason code, by shortfall descending (larger shortfall =
+more urgent). Empty input produces no alerts, and a summary of an empty alert
+list renders as `Low balance alerts: 0`.
+
 ## How to run its tests
 
 Tests use JUnit 5 (via `spring-boot-starter-test`).
